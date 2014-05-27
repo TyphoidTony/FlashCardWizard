@@ -1,0 +1,50 @@
+Flash card wizard.
+
+
+Flash cards will be 'loaded' one at a time
+with a box for the question and a single box for the answer
+where the answer once the user hits enter. The answer will then
+be pattern-matched against the answer saved on a file.
+More akin to actual flashcards, literally writing one at a time.
+
+features to maybe add: timed flash cards,multiple choice questions
+
+
+-----Overall structure----
+
+FlashOptionsWindow: determines if the user would like to create new flash cards or
+make new set.
+
+FlashCardFrame: used to 'write down questions and answers' will also hold the methods and inner classes for
+action listeners and the retrieval of the text being put into a txt file (hopefully I can generate a txt file within
+the jar)
+
+DeckCreation: will be used to create the files needed for the flash card deck
+and will determine if the file name already exists if it does it will prompt the user to
+write-over them or to pick a new name.
+FileChooser: used to create and instatiate the
+
+FileCreator: Will be used to create open and allow writing of the specific file, should get rid of the clutter and
+mis match that is happening within the DeckCreation class as at the moment it is creating and institating things it
+should be getting from another class methods to move over should be checkFileExistance(), createFile(), isNameless
+and the getQuestionsFile() and getAnswersFile().
+
+CardImage made to remove code duplication. As I was making a new method for each class that retrieved the same image
+has single method all it does it get the flashCard image that is being used on all the JFrames
+
+//TODO will continue to add as I move along.
+------------------------------
+
+use the randomaccessfile()  to populate an array from the saved questions and answers
+user string.split to 'split them at whitespace using a 'delim' variable.
+
+
+----To implement-------
+
+1)FileSaver/Opener - to load the flash cards
+2)getting the right index of the flash card answers and questions
+once one is done. (maybe running them through a "stack"?)
+3)
+
+
+
