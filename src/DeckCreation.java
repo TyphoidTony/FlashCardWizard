@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -15,14 +14,14 @@ public class DeckCreation  extends JFrame {
     private JLabel flashCards;
     private JTextField cardAmount;
     private JLabel amount;
-    private FileCreator create;
+    private FileCreator fileCreator;
     private CardImage image;
-
+    private FlashCardFrame flashCardFrame;
 
     public DeckCreation() {
-
+        flashCardFrame = new FlashCardFrame();
         image = new CardImage();
-        create = new FileCreator();
+        fileCreator = new FileCreator();
         setLayout(new BorderLayout());
         setContentPane(image.getFlashCardImage());
         setLayout(new FlowLayout());
@@ -45,14 +44,14 @@ public class DeckCreation  extends JFrame {
         JPanel panel = new JPanel();
         amount = new JLabel("Enter how many cards you want");
         cardAmount = new JTextField(5);
-        cardAmount.addActionListener(new CardNumberListener());
+
         panel.add(amount);
         panel.add(cardAmount);
         return panel;
     }
 
     /**
-     *@return returns a JPanel as a container
+     * @return returns a JPanel as a container
      * holding the components: flashCardName and flashCards
      */
     private JPanel deckNamePanel(){
@@ -74,14 +73,14 @@ public class DeckCreation  extends JFrame {
      */
 
     private void CreateFlashCardDeck(){
-        create = new FileCreator();
-        create.setDeckName(flashCardName.getText());
-        create.checkFileExistance();
+
+        fileCreator.setDeckName(flashCardName.getText());
+        fileCreator.checkFileExistance();
 
     }
 
     /**
-     *@return attempts to parse the text from the cardAmount textField
+     * @return attempts to parse the text from the cardAmount textField
      * if it can not it returns false.
      * if it can than the numberOfCards is passed as an argument
      * to the setNumberOfCards method in the FileCreator class
@@ -96,7 +95,7 @@ public class DeckCreation  extends JFrame {
                     "Flash Card Wizard v0.1",JOptionPane.ERROR_MESSAGE);
             return false;
         }
-            create.setNumberOfCards(n);
+            fileCreator.setNumberOfCards(n);
             return true;
     }
 
@@ -104,22 +103,28 @@ public class DeckCreation  extends JFrame {
 
     private class DeckNameListener implements ActionListener{
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        CreateFlashCardDeck();
-    }
-}
-    private class CardNumberListener implements ActionListener{
-
         @Override
         public void actionPerformed(ActionEvent e) {
+            CreateFlashCardDeck();
+                System.out.println(fileCreator.getDeckName());
+                flashCardFrame.createFrame();
+                if(!parseNumberOfCards()){
+                    return;
+                }
+                fileCreator.checkDir();
+            flashCardFrame.applyListener(new AnswerQuestionButtonListener());
+    }
+}
 
+private class AnswerQuestionButtonListener implements ActionListener{
 
-            if(parseNumberOfCards() == false){
-                return;
-            }
-            new FlashCardFrame();
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try{
+            fileCreator.writeToFile(flashCardFrame.getText());
+        }catch  (IOException IOE){
+            IOE.printStackTrace();
         }
     }
+}
 }

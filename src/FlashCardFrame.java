@@ -2,8 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created on 5/15/2014.
@@ -11,20 +10,20 @@ import java.io.IOException;
 public class FlashCardFrame extends JFrame {
 
 
-    private JTextField questionField;
-    private FileCreator createFiles;
-    private FileWriter writeToAnswers;
-    private JTextField answerField;
+
+
     private CardImage image;
-    public FlashCardFrame(){
+    private JTextArea area;
+    private JButton writeFile;
+
+    public void createFrame(){
 
         image = new CardImage();
-        createFiles = new FileCreator();
         setLayout(new BorderLayout());
         setContentPane(image.getFlashCardImage());
         setLayout(new FlowLayout());
-        add(questionField());
-        add(answerField());
+        add(questionAnswerArea());
+        add(buttonContainer());
         setSize(512,306);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Flash Card Wizard v0.1");
@@ -35,60 +34,47 @@ public class FlashCardFrame extends JFrame {
 
     }
 
+    /**
+     * @return returns a JPanel as a container holding a JButton: writeFile
+     */
+    private JPanel buttonContainer(){
+       JPanel panel = new JPanel();
+        writeFile = new JButton("Click to write cards down");
+        //writeFile.addActionListener(new WriteFileButtonAction());
+        panel.add(writeFile);
 
-    private JPanel questionField(){
-
-        JPanel panel = new JPanel();
-        questionField = new JTextField("Write your questions here",20);
-        questionField.addActionListener(new WriteQuestionListener());
-        panel.add(questionField);
         return panel;
+      }
 
-    }
-
-    private JPanel answerField(){
+    /**
+     * @return returns  a JPanel as a container holding JTextArea: area
+     */
+    private JPanel questionAnswerArea(){
         JPanel panel = new JPanel();
-        answerField = new JTextField("Write your answers here",20);
-        answerField.addActionListener(new WriteAnswerListener());
-        panel.add(answerField);
+        area = new JTextArea();
+        area.setRows(12);
+        area.setColumns(12);
+        panel.add(area);
         return panel;
     }
 
     /**
-     * trying to write txt to the answerFile
-     * TODO get this working.
+     * @return returns the text from the JTextArea: area
      */
-    private void writeToAnswersFile(){
+    public String getText(){
 
-        try {
-            writeToAnswers = new FileWriter((createFiles.getAnswerFile()));
-
-            writeToAnswers.write(answerField.getText());
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        String n = area.getText();
+        return n;
     }
 
-    private class WriteQuestionListener implements ActionListener{
-
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-        //TODO create an action for this event.
-
-        }
-    }
-
-    private class WriteAnswerListener implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            writeToAnswersFile();
-        }
+    /**
+     * @param al method needed because of faulty design.
+     *  In essence an out of class listener is being applied
+     *  to the button
+     *  Yes this is bad design I don't see it causing many issues down the road
+     *  but I will have to remember to take this into consideration next time.
+     */
+    public void applyListener(ActionListener al){
+        writeFile.addActionListener(al);
     }
 }
-
-
-

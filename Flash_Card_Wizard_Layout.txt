@@ -32,11 +32,13 @@ and the getQuestionsFile() and getAnswersFile().
 CardImage made to remove code duplication. As I was making a new method for each class that retrieved the same image
 has single method all it does it get the flashCard image that is being used on all the JFrames
 
-//TODO will continue to add as I move along.
-------------------------------
 
-use the randomaccessfile()  to populate an array from the saved questions and answers
-user string.split to 'split them at whitespace using a 'delim' variable.
+
+Moving forward, writing to a file now works. Now to I need to decide if setting this up the way I've planned to do is
+ a good idea. I could easily setup a delim that separates the answer and question then add them to a stack. one stack
+  for questions and one for answers. But a problem arises how would I continue to 'regenerate' cards once the stack
+  runs out?
+
 
 
 ----To implement-------
@@ -47,4 +49,22 @@ once one is done. (maybe running them through a "stack"?)
 3)
 
 
+
+Running problems:
+
+TODO http://docs.oracle.com/javase/7/docs/api/java/io/FileWriter.html
+        TODO http://stackoverflow.com/questions/10667734/java-file-open-a-file-and-write-to-it
+        TODO https://duckduckgo.com/?q=get+text+from+a+JTextField+and+write+to+file
+        TODO http://stackoverflow.com/questions/1053467/how-do-i-save-a-string-to-a-text-file-using-java
+        /*Try this next, use a JTextArea to write down all the strings
+        then dump the text to a file. After doing so when you want to generate questions
+        populate an ARRAY-LIST but before hand tokenize them so that the symbol ':' is the delim
+        might need to use two lists, now that I think of it.
+
+     UPDATE 6/14/2014: The reason I couldn't write to the file and the name for the current deckName was null is
+     because when I created a instance of the FileCreate class it would then lose the deckName variable that was
+     stored in memory. To eliminate this problem I needed to create an inner private class that implemented
+     ActionListener inside of the DeckCreation class. thus, when the name is saved to the DeckName variable instead
+     of building and showing the FlashCardFrame via a constructor I made a method that was invoked keeping the
+     FlashCardFrame class within the same FileCreator instance that was created by the DeckCreation class.
 
