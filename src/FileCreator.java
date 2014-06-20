@@ -1,6 +1,5 @@
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created on 5/26/2014.
@@ -8,9 +7,12 @@ import java.io.IOException;
 public class FileCreator {
 
     private String deckName;
-    private File answerFile;
-    private File questionFile;
     private int numberOfCards;
+    private File flashCardFile;
+    private FileWriter fileWriter;
+    private String dir = "Q&ADir";
+    private File mainDir;
+
 
     /**
      * Determines if the file exists
@@ -19,13 +21,12 @@ public class FileCreator {
      */
     public void checkFileExistance(){
 
-        answerFile = new File("txt/"+deckName+"Answers.txt");
-        questionFile = new File("txt/"+deckName+"Questions.txt");
+        flashCardFile = new File("C:/Q&ADir/"+deckName+".txt");
 
-        if(isNameless()==true){
+        if(isNameless()){
             return;
         }
-        if (!answerFile.exists() || !questionFile.exists()) {
+        if (!flashCardFile.exists()) {
 
             createFile();
 
@@ -35,7 +36,7 @@ public class FileCreator {
     }
 
     /**
-     *Prompts the user for
+     *  Prompts the user for
      * the option to either write over
      * the txt file with the same name
      * or try a different name.
@@ -47,13 +48,24 @@ public class FileCreator {
 
         if (reply == JOptionPane.YES_OPTION) {
 
-            createFile();
+                    createOverride();
         }else{
             JOptionPane.showMessageDialog(null, "Try naming your flash card deck something else",
                     "Flash Card Wizard v0.1", JOptionPane.PLAIN_MESSAGE);
-
-
         }
+    }
+
+    /**
+     * deletes file if the user clicks "Yes" on the overrideOption() prompt
+     * and then creates a new empty file with the same name.
+     */
+    private void createOverride(){
+        flashCardFile.delete();
+        try{
+            flashCardFile.createNewFile();
+        }catch(IOException e){
+            e.printStackTrace();
+       }
     }
 
     /**
@@ -63,22 +75,21 @@ public class FileCreator {
      * example: FlashCardsQuestions.txt
      * throws IOException and printsStackTrace()
      */
-    public void createFile(){
+    private void createFile(){
 
         try{
-            answerFile.createNewFile();
-            questionFile.createNewFile();
+            flashCardFile.createNewFile();
 
-        }catch(IOException e){
+               }catch(IOException e){
             e.printStackTrace();
         }
     }
 
     /**
-     *@return determines if the JTextField: deckName is empty
+     * @return determines if the JTextField: deckName is empty
      * if it is a customized error message is thrown
      */
-    public boolean isNameless(){
+    private boolean isNameless(){
 
         if(deckName.equals(null)||deckName.equals("")){
 
@@ -92,8 +103,8 @@ public class FileCreator {
     }
 
     /**
-     *@param numberOfCards sets the numberOfCards to what the argument passed
-     *for setting the number of cards outside of the DeckCreation class.
+     * @param numberOfCards sets the numberOfCards to what the argument passed
+     * for setting the number of cards outside of the DeckCreation class.
      */
     public void setNumberOfCards(int numberOfCards){
 
@@ -102,41 +113,61 @@ public class FileCreator {
         }
 
     /**
-     *@return gets number of cards
+     * @return gets number of cards
      */
     public int getNumberOfCards() {
         return numberOfCards;
     }
 
     /**
-     *@param deckName sets the deckName via the argument passed
+     * @param deckName sets the deckName via the argument passed
      *
      */
     public void setDeckName(String deckName) {
-        this.deckName = deckName;
+         this.deckName = deckName;
+
     }
 
     /**
-     *@return returns deckName
+     * @return returns deckName
      */
     public String getDeckName() {
         return deckName;
     }
 
-    /**
-     *@return returns answerFile
+   /**
+     * @param n argument passed to assign the specific text to the file.
+     * @throws IOException
      */
-    public File getAnswerFile() {
+        public void writeToFile(String n) throws IOException{
 
-        return this.answerFile;
+          fileWriter = new FileWriter(flashCardFile,true);
+          fileWriter.write(n);
+          fileWriter.close();
 
-    }
+        }
 
     /**
-     *@return returns questionFile
+     * makes the directory
      */
-    public File getQuestionFile(){
-        return this.questionFile;
+     private void makeDir(){
+
+         mainDir.mkdir();
+     }
+
+    /**
+     *
+     * @return returns true if the directory exists but false if not.
+     * if it is false then the directory is made.
+     */
+    public void checkDir(){
+        mainDir = new File(dir);
+
+        if(!mainDir.exists()){
+
+            makeDir();
+        }
+            return;
     }
 }
 
