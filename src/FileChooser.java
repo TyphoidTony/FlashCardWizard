@@ -4,6 +4,8 @@
  */
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
 public class FileChooser{
@@ -11,17 +13,18 @@ public class FileChooser{
     private JFileChooser  chooser;
     private File selectedFile;
     private ReadFile readFile;
-
+    private FileFilter cFilter;
 
     /**
      * starts a JFileChooser window
      * and opens files
-     *TODO file name extension filter of some kind
      */
        public void showFileChooser(){
 
        readFile = new ReadFile();
        chooser = new JFileChooser();
+       cFilter = new FileNameExtensionFilter("txt ",new String[]{"txt"});
+       chooser.setFileFilter(cFilter);
        chooser.setDialogTitle("Flash Card Wizard v0.1");
        int getFile = chooser.showOpenDialog(null);
 
@@ -36,7 +39,6 @@ public class FileChooser{
     }
 
     /**
-     *
      * @return returns selected file from file chooser
      */
     public File getSelectedFile(){
@@ -44,8 +46,7 @@ public class FileChooser{
         }
 
     /**
-     *
-     * @param file
+     * @param file takes type file
      * @return Returns false if the extension
      * is not a .txt file
      */
