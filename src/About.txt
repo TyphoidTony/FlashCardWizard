@@ -1,0 +1,3 @@
+This is flash card wizard, hello and welcome to the best thing to have ever entered your life.
+In its current state it is barely functioning. I things move along it should be more usable later
+Thank you for taking the time to check my application out it really means a lot to me. 
